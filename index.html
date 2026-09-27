@@ -1,0 +1,1008 @@
+<title>Milk Score</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Bricolage+Grotesque:wght@600;800&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #edf0f4;
+    --surface: #ffffff;
+    --surface-2: #f5f7fa;
+    --ink: #141a22;
+    --ink-2: #4b5867;
+    --ink-3: #78889b;
+    --line: #d4dbe4;
+    --line-2: #e4e9ef;
+    --rule: #141a22;
+    --accent: #c4161c;
+    --accent-soft: #fdeceb;
+    --on-accent: #ffffff;
+    --ramp-1: #d9af55;
+    --ramp-2: #c1932f;
+    --ramp-3: #a5781c;
+    --ramp-4: #856012;
+    --ramp-5: #66490c;
+    --ramp-6: #472f07;
+    --track: #e6eaf0;
+    --shadow: 0 1px 2px rgba(20, 26, 34, .06), 0 8px 24px -12px rgba(20, 26, 34, .14);
+    --display: "Bricolage Grotesque", "Archivo", system-ui, sans-serif;
+    --body: "Archivo", system-ui, -apple-system, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0d1117;
+      --surface: #161c25;
+      --surface-2: #1d242f;
+      --ink: #e9eef5;
+      --ink-2: #9daab9;
+      --ink-3: #78869a;
+      --line: #2b343f;
+      --line-2: #222a34;
+      --rule: #e9eef5;
+      --accent: #ff5a60;
+      --accent-soft: #2c1417;
+      --on-accent: #1d0508;
+      --ramp-1: #fbe3ae;
+      --ramp-2: #f2c976;
+      --ramp-3: #e0ac45;
+      --ramp-4: #c48d28;
+      --ramp-5: #a0711b;
+      --ramp-6: #7d5714;
+      --track: #232b36;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px -14px rgba(0, 0, 0, .7);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0d1117;
+    --surface: #161c25;
+    --surface-2: #1d242f;
+    --ink: #e9eef5;
+    --ink-2: #9daab9;
+    --ink-3: #78869a;
+    --line: #2b343f;
+    --line-2: #222a34;
+    --rule: #e9eef5;
+    --accent: #ff5a60;
+    --accent-soft: #2c1417;
+    --on-accent: #1d0508;
+    --ramp-1: #fbe3ae;
+    --ramp-2: #f2c976;
+    --ramp-3: #e0ac45;
+    --ramp-4: #c48d28;
+    --ramp-5: #a0711b;
+    --ramp-6: #7d5714;
+    --track: #232b36;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 28px -14px rgba(0, 0, 0, .7);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .shell {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 40px 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  h1, h2, h3 { margin: 0; text-wrap: balance; }
+  p { margin: 0; }
+  code {
+    font-family: var(--mono);
+    font-size: .85em;
+    background: var(--surface-2);
+    border: 1px solid var(--line-2);
+    border-radius: 3px;
+    padding: .1em .35em;
+    white-space: nowrap;
+  }
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  /* ---------- masthead ---------- */
+  .masthead { display: flex; flex-direction: column; gap: 10px; }
+  .masthead h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(42px, 9vw, 68px);
+    line-height: .94;
+    letter-spacing: -.025em;
+  }
+  .masthead h1 .drop { color: var(--accent); }
+  .lede { max-width: 60ch; color: var(--ink-2); font-size: 16px; }
+
+  /* ---------- intake ---------- */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+  }
+  .intake { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .intake-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; justify-content: space-between; }
+  .intake label { font-size: 13px; font-weight: 700; letter-spacing: .02em; }
+  #decklist {
+    width: 100%;
+    min-height: 190px;
+    resize: vertical;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--ink);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  #decklist::placeholder { color: var(--ink-3); }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  button {
+    font-family: var(--body);
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 7px;
+    padding: 10px 18px;
+    cursor: pointer;
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    color: var(--ink);
+    transition: background .12s ease, border-color .12s ease;
+  }
+  button:hover:not(:disabled) { border-color: var(--ink-3); }
+  button:disabled { opacity: .5; cursor: progress; }
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+    padding-inline: 24px;
+  }
+  .btn-primary:hover:not(:disabled) { filter: brightness(1.08); border-color: var(--accent); }
+  .status { font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .status.bad { color: var(--accent); font-weight: 600; }
+  .hint { font-size: 13px; color: var(--ink-3); max-width: 72ch; }
+
+  /* ---------- results ---------- */
+  #results { display: flex; flex-direction: column; gap: 28px; }
+  .sample-flag {
+    align-self: flex-start;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    background: var(--surface-2);
+    border: 1px dashed var(--line);
+    border-radius: 999px;
+    padding: 5px 13px;
+  }
+  .topgrid { display: grid; grid-template-columns: 1fr 340px; gap: 20px; align-items: start; }
+  @media (max-width: 800px) { .topgrid { grid-template-columns: 1fr; } }
+
+  /* score readout */
+  .readout { padding: 26px 24px; display: flex; gap: 26px; align-items: stretch; }
+  @media (max-width: 420px) { .readout { gap: 16px; padding: 22px 18px; } }
+  .gauge { display: flex; gap: 10px; flex: 0 0 auto; }
+  .gauge-track {
+    position: relative;
+    width: 20px;
+    height: 254px;
+    border-radius: 10px;
+    background: var(--track);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .gauge-fill {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to top, var(--ramp-1), var(--ramp-3) 55%, var(--ramp-5));
+    transition: height .7s cubic-bezier(.22, 1, .36, 1);
+  }
+  .gauge-line {
+    position: absolute;
+    left: -3px; right: -3px;
+    height: 3px;
+    background: var(--accent);
+    transition: bottom .7s cubic-bezier(.22, 1, .36, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gauge-fill, .gauge-line { transition: none; }
+  }
+  .ladder { position: relative; width: 88px; height: 254px; }
+  @media (max-width: 420px) { .ladder { width: 74px; } }
+  .rung {
+    position: absolute;
+    left: 0; right: 0;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    transform: translateY(50%);
+    line-height: 1.15;
+  }
+  .rung::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 1px;
+    background: var(--line);
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+  .rung.on { color: var(--ink); font-weight: 800; }
+  .rung.on::before { background: var(--accent); width: 10px; height: 2px; }
+
+  .score-body { display: flex; flex-direction: column; justify-content: center; gap: 6px; min-width: 0; }
+  .score-num {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(54px, 12vw, 104px);
+    line-height: .86;
+    letter-spacing: -.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  .score-num .of { font-size: .26em; color: var(--ink-3); letter-spacing: 0; margin-left: .12em; }
+  .tier-name {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(20px, 4.4vw, 31px);
+    line-height: 1.1;
+    color: var(--accent);
+    letter-spacing: -.01em;
+  }
+  .verdict { color: var(--ink-2); font-size: 14px; max-width: 34ch; }
+
+  /* nutrition facts panel */
+  .facts {
+    background: var(--surface);
+    border: 2px solid var(--rule);
+    border-radius: 4px;
+    padding: 12px 14px 14px;
+    font-size: 13px;
+  }
+  .facts h2 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 27px;
+    line-height: 1;
+    letter-spacing: -.02em;
+  }
+  .facts .serving { font-weight: 600; display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; }
+  .r-thin { border-top: 1px solid var(--rule); }
+  .r-med { border-top: 5px solid var(--rule); }
+  .r-thick { border-top: 10px solid var(--rule); }
+  .frow {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 3px 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .frow .v { font-family: var(--mono); font-weight: 600; white-space: nowrap; }
+  .frow.ind { padding-left: 16px; font-weight: 400; color: var(--ink-2); }
+  .frow.ind .v { font-weight: 400; }
+  .frow.big { font-size: 15px; font-weight: 800; align-items: baseline; }
+  .frow.big .v { font-size: 20px; font-weight: 600; }
+  .frow b { font-weight: 700; }
+  .frow .name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .facts .foot { font-size: 11px; color: var(--ink-2); padding-top: 7px; line-height: 1.4; }
+  .dv-head {
+    text-align: right;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 0;
+  }
+
+  /* ---------- section headings ---------- */
+  .sec { display: flex; flex-direction: column; gap: 14px; }
+  .sec-head { display: flex; flex-direction: column; gap: 3px; }
+  .sec-head h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 21px;
+    letter-spacing: -.01em;
+  }
+  .sec-head p { font-size: 13px; color: var(--ink-2); max-width: 66ch; }
+
+  /* ---------- band chart ---------- */
+  .chart { padding: 20px; display: flex; flex-direction: column; gap: 9px; }
+  .brow {
+    display: grid;
+    grid-template-columns: 136px 1fr 74px;
+    gap: 12px;
+    align-items: center;
+    cursor: default;
+  }
+  @media (max-width: 560px) { .brow { grid-template-columns: 100px 1fr 62px; gap: 8px; } }
+  .brow-label { font-size: 12px; font-weight: 600; line-height: 1.25; }
+  .brow-label small { display: block; font-family: var(--mono); font-size: 10px; font-weight: 400; color: var(--ink-3); }
+  .brow-track { height: 15px; background: var(--track); border-radius: 3px; overflow: hidden; }
+  .brow-fill { height: 100%; border-radius: 0 4px 4px 0; transition: width .6s cubic-bezier(.22, 1, .36, 1); }
+  @media (prefers-reduced-motion: reduce) { .brow-fill { transition: none; } }
+  .brow-val { font-family: var(--mono); font-size: 12px; color: var(--ink-2); text-align: right; font-variant-numeric: tabular-nums; }
+  .brow-val b { color: var(--ink); font-weight: 600; }
+  #tip {
+    position: fixed;
+    z-index: 40;
+    pointer-events: none;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+    padding: 8px 11px;
+    font-size: 12px;
+    line-height: 1.45;
+    max-width: 240px;
+  }
+  #tip strong { display: block; font-size: 12.5px; }
+  #tip span { color: var(--ink-2); font-family: var(--mono); font-size: 11px; }
+
+  /* ---------- notable ---------- */
+  .notable { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 680px) { .notable { grid-template-columns: 1fr; } }
+  .notable-card { padding: 18px 20px; display: flex; flex-direction: column; gap: 11px; }
+  .notable-card h3 { font-size: 12px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+  .notable-card .sub { font-size: 12px; color: var(--ink-3); margin-top: -9px; }
+  .nlist { display: flex; flex-direction: column; }
+  .nrow {
+    display: grid;
+    grid-template-columns: 8px 1fr auto;
+    gap: 9px;
+    align-items: center;
+    padding: 6px 0;
+    border-top: 1px solid var(--line-2);
+    font-size: 13px;
+  }
+  .nrow:first-child { border-top: 0; }
+  .dot { width: 8px; height: 8px; border-radius: 2px; flex: 0 0 auto; }
+  .nrow .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .nrow .rk { font-family: var(--mono); font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+  /* ---------- ledger ---------- */
+  .ledger-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 440px; }
+  thead th {
+    background: var(--surface-2);
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  thead th button {
+    all: unset;
+    cursor: pointer;
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+  }
+  thead th button:hover { color: var(--ink); }
+  thead th .arrow { color: var(--accent); font-size: 9px; }
+  th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody td { padding: 8px 14px; border-bottom: 1px solid var(--line-2); }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover { background: var(--surface-2); }
+  td.card > span:nth-child(2) { min-width: 0; }
+  td.card { display: flex; align-items: center; gap: 9px; }
+  td .mono { font-family: var(--mono); font-size: 12.5px; }
+  .cmdr-chip {
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: .09em;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 3px;
+    padding: 2px 5px;
+    white-space: nowrap;
+  }
+  .milk-cell { display: inline-flex; align-items: center; gap: 8px; justify-content: flex-end; }
+  .milk-bar { width: 46px; height: 7px; border-radius: 2px; background: var(--track); overflow: hidden; flex: 0 0 auto; }
+  .milk-bar i { display: block; height: 100%; border-radius: 0 3px 3px 0; }
+
+  /* ---------- notes + method ---------- */
+  .note { padding: 15px 18px; font-size: 13px; color: var(--ink-2); display: flex; flex-direction: column; gap: 6px; }
+  .note b { color: var(--ink); font-size: 13px; }
+  .note .names { font-family: var(--mono); font-size: 12.5px; color: var(--accent); overflow-wrap: anywhere; }
+  .method { padding: 20px; display: flex; flex-direction: column; gap: 12px; font-size: 13.5px; color: var(--ink-2); }
+  .method h2 { font-family: var(--display); font-weight: 600; font-size: 19px; color: var(--ink); }
+  .method p { max-width: 68ch; }
+  .formula {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--ink);
+    background: var(--surface-2);
+    border: 1px solid var(--line-2);
+    border-radius: 7px;
+    padding: 12px 14px;
+    overflow-x: auto;
+    white-space: pre;
+    line-height: 1.8;
+  }
+  footer { font-size: 12px; color: var(--ink-3); border-top: 1px solid var(--line); padding-top: 16px; }
+  footer a { color: var(--ink-2); }
+</style>
+
+<div class="shell">
+  <header class="masthead">
+    <span class="eyebrow">Commander deck assay</span>
+    <h1>Milk Score<span class="drop">.</span></h1>
+    <p class="lede">Paste a Commander list and every card is weighed against how often the format
+      actually plays it. Staples score near zero. The cards nobody else sleeves score the milkiest.
+      Basic lands get poured out before anything is measured.</p>
+  </header>
+
+  <section class="panel intake">
+    <div class="intake-head">
+      <label for="decklist">Decklist</label>
+      <span class="eyebrow" id="count-note">0 cards</span>
+    </div>
+    <textarea id="decklist" spellcheck="false" placeholder="1 Ruric Thar, the Unbowed&#10;1 Sol Ring&#10;1 Bosium Strip&#10;8 Forest"></textarea>
+    <div class="actions">
+      <button type="button" class="btn-primary" id="score-btn">Score deck</button>
+      <button type="button" id="sample-btn">Load example deck</button>
+      <button type="button" id="clear-btn">Clear</button>
+      <span class="status" id="status" role="status" aria-live="polite"></span>
+    </div>
+    <p class="hint">Takes exports from Moxfield, Archidekt, TappedOut and Arena — <code>1 Sol Ring (LTC) 291</code>,
+      <code>1x Sol Ring</code>, or a bare <code>Sol Ring</code>. Set codes, collector numbers, foil markers and
+      <code>[Category]</code> tags are stripped; sideboard, maybeboard and token sections are skipped.
+      Card names and EDHREC ranks are a snapshot bundled with the page (dated
+      <span id="snapshot-date">…</span>), not a live lookup — very recently spoiled cards may be missing.</p>
+  </section>
+
+  <section id="results" hidden></section>
+
+  <div class="panel method">
+    <h2>How the score is poured</h2>
+    <p>Every card carries an EDHREC rank: the most-played card in Commander is rank 1, and the ladder runs
+      out past 33,000. Rank is a running order rather than a play rate, so the gap between rank 20 and rank
+      120 matters far more than the gap between 20,000 and 20,100. A fractional exponent compresses the
+      crowded top of the ladder and spreads out the long tail:</p>
+    <div class="formula">card milk  =  100 × (rank ÷ 33,000) ^ 0.4     ·     a card with no rank at all = 100
+deck milk  =  the average card milk, weighted by copies</div>
+    <p>Basic lands — snow basics and Wastes included — never enter the average; a deck is not spicier for
+      running eleven Forests instead of fourteen. Everything else counts, commander included. A card so
+      rarely played that EDHREC has never ranked it takes the full 100.</p>
+  </div>
+
+  <footer>
+    Card data and EDHREC ranks snapshotted from the <a href="https://scryfall.com/docs/api" target="_blank" rel="noopener">Scryfall API</a>.
+    Not affiliated with or endorsed by Wizards of the Coast, Scryfall or EDHREC.
+  </footer>
+</div>
+
+<div id="tip" hidden></div>
+
+<script>
+  "use strict";
+
+  /* ------------------------------------------------------------------ config */
+  var CARD_DATA_URL = "cards.json";
+  var MAX_RANK = 32344;   // overwritten once cards.json loads with its real max
+  var EXPONENT = 0.4;
+  var STORE_KEY = "milkscore.decklist.v1";
+
+  var TIERS = [
+    { min: 0,  name: "Skim",                 verdict: "This is the EDHREC front page with a commander stapled on. Nothing here would surprise anyone at the table." },
+    { min: 12, name: "One Percent",          verdict: "Precon-adjacent. The good cards are all here, and so is everyone else's version of them." },
+    { min: 24, name: "Two Percent",          verdict: "A real build on a familiar frame. Recognisable, but a handful of slots are genuinely yours." },
+    { min: 36, name: "Whole Milk",           verdict: "Properly brewed. Enough off-menu cards that the table has to stop and read a few of them." },
+    { min: 50, name: "Half and Half",        verdict: "You are shopping below rank 5,000 on purpose. Expect questions about at least six cards." },
+    { min: 64, name: "Heavy Cream",          verdict: "Deep cuts outnumber the staples. This deck exists in about four other places on earth." },
+    { min: 78, name: "Raw, Unpasteurised",   verdict: "Cards that have not been played on camera since Rath block. No notes." }
+  ];
+
+  var BANDS = [
+    { name: "Staples",       hint: "rank 1–250",        max: 250,      ramp: "--ramp-1" },
+    { name: "Well known",    hint: "rank 251–1,500",    max: 1500,     ramp: "--ramp-2" },
+    { name: "Sometimes",     hint: "rank 1,501–5,000",  max: 5000,     ramp: "--ramp-3" },
+    { name: "Deep cut",      hint: "rank 5,001–12,000", max: 12000,    ramp: "--ramp-4" },
+    { name: "Obscure",       hint: "rank 12,001+",      max: Infinity, ramp: "--ramp-5" },
+    { name: "Off the chart", hint: "never ranked",      max: null,     ramp: "--ramp-6" }
+  ];
+
+  var SECTION_SKIP = /^(sideboard|maybeboard|maybe board|considering|tokens?|acquire|wishlist|planes?|schemes?|emblems?|attractions?|stickers?)\b/i;
+  var SECTION_KEEP = /^(commanders?|deck|decklist|mainboard|main deck|main|companion|creatures?|lands?|spells?|artifacts?|enchantments?|instants?|sorceries|sorcery|planeswalkers?|battles?|ramp|removal|draw|utility|other|signature spell)\b/i;
+
+  var SAMPLE = [
+    "Commander",
+    "1 Ruric Thar, the Unbowed",
+    "",
+    "Deck",
+    "1 Grumgully, the Generous", "1 Sol Ring", "1 Arcane Signet", "1 Gruul Signet",
+    "1 Rampant Growth", "1 Cultivate", "1 Kodama's Reach", "1 Nature's Lore",
+    "1 Three Visits", "1 Wood Elves", "1 Sakura-Tribe Elder", "1 Birds of Paradise",
+    "1 Llanowar Elves", "1 Elvish Mystic", "1 Wild Growth", "1 Utopia Sprawl",
+    "1 Hedron Archive", "1 Thran Dynamo", "1 Worn Powerstone", "1 Beast Within",
+    "1 Chaos Warp", "1 Vandalblast", "1 Blasphemous Act", "1 Krosan Grip",
+    "1 Nature's Claim", "1 Decimate", "1 Beast Whisperer", "1 Guardian Project",
+    "1 Eternal Witness", "1 Heroic Intervention", "1 Lightning Greaves",
+    "1 Swiftfoot Boots", "1 Skullclamp", "1 Xenagos, God of Revels",
+    "1 Etali, Primal Storm", "1 Garruk's Uprising", "1 Return of the Wildspeaker",
+    "1 Elvish Aberration", "1 Ley Druid", "1 Whirling Catapult", "1 Krark-Clan Grunt",
+    "1 Orcish Captain", "1 Mogg Alarm", "1 Goblin Bomb", "1 Illicit Auction",
+    "1 Hivestone", "1 Mana Web", "1 Goblin Kaboomist", "1 Dictate of Karametra",
+    "1 Thousand-Year Elixir", "1 Bösium Strip", "1 Rust", "1 Ritual of Subdual",
+    "1 Storm Seeker", "1 Tempting Licid", "1 Anaba Shaman", "1 Tarpan",
+    "1 Rockfall Vale", "1 Gorilla Berserkers", "1 Mudbrawler Cohort",
+    "1 Balduvian Hydra", "1 Anaba Ancestor", "1 Viashino Sandstalker",
+    "1 Rust Elemental", "1 Living Terrain", "1 Fungal Bloom", "1 Thundering Giant",
+    "1 Krosan Verge", "1 Command Tower", "1 Exotic Orchard", "1 Reflecting Pool",
+    "1 Rootbound Crag", "1 Kessig Wolf Run", "1 Skarrg, the Rage Pits",
+    "1 Cinder Glade", "1 Karplusan Forest", "1 Game Trail",
+    "1 Grove of the Burnwillows", "1 Sheltered Thicket", "1 Mosswort Bridge",
+    "1 Spinerock Knoll", "1 Reliquary Tower", "1 Yavimaya, Cradle of Growth",
+    "1 Rugged Highlands", "8 Forest", "7 Mountain"
+  ].join("\n");
+
+  /* ------------------------------------------------------------------- utils */
+  function $(id) { return document.getElementById(id); }
+  function fmt(n) { return n.toLocaleString("en-US"); }
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function norm(s) {
+    return s.normalize("NFD").replace(/[̀-ͯ]/g, "")
+            .toLowerCase().replace(/[^a-z0-9]/g, "");
+  }
+  function readStore() {
+    try { return window.localStorage.getItem(STORE_KEY) || ""; } catch (e) { return ""; }
+  }
+  function writeStore(v) {
+    try { window.localStorage.setItem(STORE_KEY, v); } catch (e) { /* private mode, blocked storage */ }
+  }
+
+  /* ------------------------------------------------------------------- parse */
+  function parseDeck(text) {
+    var lines = String(text).replace(/ /g, " ").split(/\r?\n/);
+    var entries = [], skipping = false, inCommander = false;
+
+    for (var i = 0; i < lines.length; i++) {
+      var raw = lines[i].trim();
+      if (!raw) continue;
+      if (/^(\/\/|#(?!\d))/.test(raw)) continue;   // comment lines
+      if (/^SB:/i.test(raw)) continue;             // Magic Workstation sideboard
+
+      // A section header has no leading quantity and is short: "Commander", "Deck (99)", "Lands:"
+      var head = raw.replace(/[:(—].*$/, "").trim();
+      if (!/^\d/.test(raw) && head.length <= 24 &&
+          (SECTION_SKIP.test(head) || SECTION_KEEP.test(head))) {
+        skipping = SECTION_SKIP.test(head);
+        inCommander = /^commanders?\b/i.test(head);
+        continue;
+      }
+      if (skipping) continue;
+
+      var m = raw.match(/^(\d+)\s*[xX]?\s+(.*)$/);
+      var qty = m ? parseInt(m[1], 10) : 1;
+      var name = m ? m[2] : raw;
+      var isCmdr = inCommander || /\*CMDR\*/i.test(name);
+
+      name = name
+        .replace(/\s*\[[^\]]*\]/g, " ")                                        // [Category]
+        .replace(/\s*\*[A-Za-z]{1,6}\*/g, " ")                                 // *F* *E* *CMDR*
+        .replace(/\s*\^[^^]*\^/g, " ")                                         // ^colour^
+        .replace(/\s*<[^>]*>/g, " ")                                           // <tag>
+        .replace(/\s*\([A-Za-z0-9]{2,6}\)(?:\s+[A-Za-z0-9★-]+)?\s*$/, "") // (SET) 291
+        .replace(/\s+\d{1,4}[a-z]?$/, "")                                      // bare collector number
+        .replace(/\s*#.*$/, "")                                                // #tags
+        .replace(/\s{2,}/g, " ")
+        .trim();
+
+      if (!name || /^\d+$/.test(name)) continue;
+
+      // Front face only: Scryfall rejects "Front // Back" as a name identifier.
+      entries.push({
+        qty: qty,
+        name: name,
+        lookup: name.split(/\s+\/\/\s+/)[0].trim(),
+        commander: isCmdr
+      });
+    }
+    return entries;
+  }
+
+  /* -------------------------------------------------------------- card data */
+  // Artifacts can't make cross-origin fetch calls at runtime, so the card ->
+  // EDHREC-rank table ships as a snapshot alongside this page (cards.json)
+  // instead of being queried from Scryfall live. cardMeta.asOf is when that
+  // snapshot was pulled.
+  var cardIndex = null;   // norm(name) -> { name, rank }
+  var cardMeta = null;    // { asOf, maxRank }
+  var loadPromise = null;
+
+  function loadCardData() {
+    if (loadPromise) return loadPromise;
+    loadPromise = fetch(CARD_DATA_URL).then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    }).then(function (data) {
+      cardMeta = { asOf: data.asOf, maxRank: data.maxRank };
+      if (data.maxRank) MAX_RANK = data.maxRank;
+      var idx = Object.create(null);
+      data.cards.forEach(function (entry) {
+        var name = entry[0], rank = entry[1] || null;
+        var rec = { name: name, rank: rank };
+        var nk = norm(name);
+        if (nk && !idx[nk]) idx[nk] = rec;
+        if (name.indexOf(" // ") !== -1) {
+          name.split(" // ").forEach(function (face) {
+            var fk = norm(face);
+            if (fk && !idx[fk]) idx[fk] = rec;
+          });
+        }
+      });
+      cardIndex = idx;
+      var el = $("snapshot-date");
+      if (el) el.textContent = cardMeta.asOf;
+    });
+    return loadPromise;
+  }
+
+  /* ------------------------------------------------------------------- score */
+  var BASIC_RE = /^(Snow-Covered )?(Plains|Island|Swamp|Mountain|Forest|Wastes)$/;
+  function isBasic(name) {
+    return BASIC_RE.test(name);
+  }
+  function cardMilk(rank) {
+    if (rank === null) return 100;
+    return 100 * Math.pow(Math.min(rank, MAX_RANK) / MAX_RANK, EXPONENT);
+  }
+  function bandOf(rank) {
+    if (rank === null) return 5;
+    for (var i = 0; i < 5; i++) if (rank <= BANDS[i].max) return i;
+    return 4;
+  }
+  function tierOf(score) {
+    var t = TIERS[0];
+    for (var i = 0; i < TIERS.length; i++) if (score >= TIERS[i].min) t = TIERS[i];
+    return t;
+  }
+
+  function scoreDeck(entries, index) {
+    var rows = [], basics = 0, unknown = [], total = 0, weight = 0, sum = 0;
+
+    entries.forEach(function (e) {
+      total += e.qty;
+      var card = index[norm(e.lookup)] || index[norm(e.name)];
+      if (!card) { unknown.push(e.name); return; }
+      if (isBasic(card.name)) { basics += e.qty; return; }
+
+      var rank = card.rank;
+      var milk = cardMilk(rank);
+      weight += e.qty;
+      sum += milk * e.qty;
+      rows.push({
+        name: card.name, qty: e.qty, rank: rank, milk: milk,
+        band: bandOf(rank), commander: e.commander
+      });
+    });
+
+    var bandCounts = [0, 0, 0, 0, 0, 0];
+    rows.forEach(function (r) { bandCounts[r.band] += r.qty; });
+
+    var ranked = rows.filter(function (r) { return r.rank !== null; })
+                     .map(function (r) { return r.rank; })
+                     .sort(function (a, b) { return a - b; });
+
+    return {
+      rows: rows, basics: basics, unknown: unknown, total: total,
+      scored: weight, score: weight ? sum / weight : 0,
+      bandCounts: bandCounts,
+      median: ranked.length ? ranked[Math.floor(ranked.length / 2)] : null
+    };
+  }
+
+  /* ------------------------------------------------------------------ render */
+  var sortKey = "milk", sortDir = -1, current = null, showingSample = false;
+
+  function rampVar(band) { return "var(" + BANDS[band].ramp + ")"; }
+  function shortName(n) { return n.split(" // ")[0]; }
+
+  function gaugeHTML(score) {
+    var pct = Math.max(0, Math.min(100, score));
+    var here = tierOf(score).name;
+    var rungs = TIERS.map(function (t) {
+      return '<div class="rung' + (here === t.name ? " on" : "") +
+             '" style="bottom:' + t.min + '%">' + esc(t.name) + "</div>";
+    }).join("");
+    return '<div class="gauge">' +
+      '<div class="gauge-track" role="img" aria-label="Milk score ' + score.toFixed(1) +
+        " out of 100, tier " + esc(here) + '">' +
+        '<div class="gauge-fill" style="height:' + pct + '%"></div>' +
+        '<div class="gauge-line" style="bottom:' + pct + '%"></div>' +
+      "</div>" +
+      '<div class="ladder">' + rungs + "</div></div>";
+  }
+
+  function factsHTML(res) {
+    function share(n) { return res.scored ? Math.round((n / res.scored) * 100) : 0; }
+    var deepest = res.rows.slice().sort(function (a, b) { return b.milk - a.milk; })[0];
+
+    var bandRows = BANDS.map(function (b, i) {
+      if (!res.bandCounts[i]) return "";
+      return '<div class="frow ind"><span>' + esc(b.name) + '</span><span class="v">' +
+             res.bandCounts[i] + "  ·  " + share(res.bandCounts[i]) + "%</span></div>";
+    }).join("");
+
+    return '<div class="facts">' +
+      "<h2>Milk Facts</h2>" +
+      '<div class="r-thin"></div>' +
+      '<div class="serving"><span>Serving size</span><span>1 deck (' + fmt(res.total) + " cards)</span></div>" +
+      '<div class="r-thick"></div>' +
+      '<div class="frow big"><span>Milk Score</span><span class="v">' + res.score.toFixed(1) + "</span></div>" +
+      '<div class="r-med"></div>' +
+      '<div class="dv-head">share of measured</div>' +
+      '<div class="r-thin"></div>' +
+      '<div class="frow"><span><b>Cards measured</b></span><span class="v">' + fmt(res.scored) + "</span></div>" +
+      bandRows +
+      '<div class="r-thin"></div>' +
+      '<div class="frow"><span><b>Basic lands poured out</b></span><span class="v">' + fmt(res.basics) + "</span></div>" +
+      '<div class="frow"><span><b>Names not recognised</b></span><span class="v">' + fmt(res.unknown.length) + "</span></div>" +
+      '<div class="r-med"></div>' +
+      '<div class="frow"><span>Median EDHREC rank</span><span class="v">' +
+        (res.median === null ? "—" : fmt(res.median)) + "</span></div>" +
+      '<div class="frow"><span>Deepest cut</span><span class="v name" style="font-weight:600">' +
+        (deepest ? esc(shortName(deepest.name)) : "—") + "</span></div>" +
+      '<div class="r-thin"></div>' +
+      '<div class="foot">Percentages are shares of the ' + fmt(res.scored) +
+        " cards that were measured. Basic lands are left out of every figure here except serving size.</div>" +
+      "</div>";
+  }
+
+  function chartHTML(res) {
+    var max = Math.max.apply(null, res.bandCounts.concat([1]));
+    var rows = BANDS.map(function (b, i) {
+      var n = res.bandCounts[i];
+      var pct = res.scored ? Math.round((n / res.scored) * 100) : 0;
+      return '<div class="brow" tabindex="0" data-band="' + i + '">' +
+        '<div class="brow-label">' + esc(b.name) + "<small>" + esc(b.hint) + "</small></div>" +
+        '<div class="brow-track"><div class="brow-fill" style="width:' +
+          (n / max * 100).toFixed(2) + "%;background:" + rampVar(i) + '"></div></div>' +
+        '<div class="brow-val"><b>' + n + "</b> · " + pct + "%</div>" +
+      "</div>";
+    }).join("");
+    return '<div class="panel chart">' + rows + "</div>";
+  }
+
+  function nlist(rows) {
+    return '<div class="nlist">' + rows.map(function (r) {
+      return '<div class="nrow"><span class="dot" style="background:' + rampVar(r.band) + '"></span>' +
+        '<span class="nm">' + esc(shortName(r.name)) + "</span>" +
+        '<span class="rk">' + (r.rank === null ? "unranked" : "#" + fmt(r.rank)) + "</span></div>";
+    }).join("") + "</div>";
+  }
+
+  function ledgerHTML(res) {
+    var rows = res.rows.slice().sort(function (a, b) {
+      var v;
+      if (sortKey === "name") v = a.name.localeCompare(b.name);
+      else if (sortKey === "rank") {
+        v = (a.rank === null ? MAX_RANK + 1 : a.rank) - (b.rank === null ? MAX_RANK + 1 : b.rank);
+      } else v = a.milk - b.milk;
+      return v * sortDir;
+    });
+    function arrow(k) {
+      return sortKey === k ? '<span class="arrow">' + (sortDir < 0 ? "▼" : "▲") + "</span>" : "";
+    }
+
+    var body = rows.map(function (r) {
+      return "<tr>" +
+        '<td class="card">' +
+          '<span class="dot" style="background:' + rampVar(r.band) + '"></span>' +
+          "<span>" + esc(r.name) + "</span>" +
+          (r.commander ? '<span class="cmdr-chip">CMDR</span>' : "") +
+          (r.qty > 1 ? '<span class="rk mono">×' + r.qty + "</span>" : "") +
+        "</td>" +
+        '<td class="num mono">' + (r.rank === null ? "unranked" : fmt(r.rank)) + "</td>" +
+        '<td class="num"><span class="milk-cell">' +
+          '<span class="milk-bar"><i style="width:' + r.milk.toFixed(1) + "%;background:" + rampVar(r.band) + '"></i></span>' +
+          '<span class="mono">' + r.milk.toFixed(1) + "</span></span></td>" +
+      "</tr>";
+    }).join("");
+
+    return '<div class="ledger-wrap"><table><thead><tr>' +
+      '<th><button type="button" data-sort="name">Card ' + arrow("name") + "</button></th>" +
+      '<th class="num"><button type="button" data-sort="rank">EDHREC rank ' + arrow("rank") + "</button></th>" +
+      '<th class="num"><button type="button" data-sort="milk">Milk ' + arrow("milk") + "</button></th>" +
+      "</tr></thead><tbody>" + body + "</tbody></table></div>";
+  }
+
+  function render(res) {
+    current = res;
+    var tier = tierOf(res.score);
+    var byMilk = res.rows.slice().sort(function (a, b) { return b.milk - a.milk; });
+    var deep = byMilk.slice(0, 8);
+    var plain = byMilk.slice(-8).reverse();
+
+    var html = "";
+    if (showingSample) html += '<span class="sample-flag">Example deck · Ruric Thar, the Unbowed</span>';
+
+    html +=
+      '<div class="topgrid">' +
+        '<div class="panel readout">' + gaugeHTML(res.score) +
+          '<div class="score-body">' +
+            '<div class="score-num">' + res.score.toFixed(1) + '<span class="of">/100</span></div>' +
+            '<div class="tier-name">' + esc(tier.name) + "</div>" +
+            '<p class="verdict">' + esc(tier.verdict) + "</p>" +
+          "</div>" +
+        "</div>" +
+        factsHTML(res) +
+      "</div>" +
+
+      '<div class="sec"><div class="sec-head"><h2>Where the deck sits on the ladder</h2>' +
+        "<p>Each of the " + fmt(res.scored) + " measured cards falls into one band of EDHREC's play order. " +
+        "Deeper colour means the format plays it less often.</p></div>" +
+        chartHTML(res) + "</div>" +
+
+      '<div class="notable">' +
+        '<div class="panel notable-card"><h3>Deepest cuts</h3>' +
+          '<p class="sub">Highest milk in the deck</p>' + nlist(deep) + "</div>" +
+        '<div class="panel notable-card"><h3>Everyone is playing these</h3>' +
+          '<p class="sub">Lowest milk in the deck</p>' + nlist(plain) + "</div>" +
+      "</div>";
+
+    if (res.unknown.length) {
+      html += '<div class="panel note"><b>' + res.unknown.length +
+        (res.unknown.length === 1 ? " name was" : " names were") +
+        " not recognised, so they are not in the score</b>" +
+        "<span>Check the spelling, or paste the front face only for a double-faced card:</span>" +
+        '<span class="names">' + esc(res.unknown.slice(0, 40).join("  ·  ")) +
+        (res.unknown.length > 40 ? "  ·  and " + (res.unknown.length - 40) + " more" : "") +
+        "</span></div>";
+    }
+
+    html += '<div class="sec"><div class="sec-head"><h2>Card ledger</h2>' +
+      "<p>Every measured card with its rank and its own milk figure. Sort by any column.</p></div>" +
+      ledgerHTML(res) + "</div>";
+
+    var out = $("results");
+    out.innerHTML = html;
+    out.hidden = false;
+    wireResults();
+  }
+
+  /* -------------------------------------------------------------- interaction */
+  function showTip(el, band) {
+    if (!current) return;
+    var tip = $("tip");
+    var n = current.bandCounts[band];
+    var pct = current.scored ? Math.round((n / current.scored) * 100) : 0;
+    var ranks = current.rows.filter(function (r) { return r.band === band && r.rank !== null; })
+                            .map(function (r) { return r.rank; })
+                            .sort(function (a, b) { return a - b; });
+    var range = ranks.length
+      ? "ranks " + fmt(ranks[0]) + "–" + fmt(ranks[ranks.length - 1])
+      : (band === 5 ? "no EDHREC rank" : "no cards in this band");
+
+    tip.innerHTML = "<strong>" + esc(BANDS[band].name) + "</strong><span>" +
+      n + " card" + (n === 1 ? "" : "s") + " · " + pct + "% of measured · " + range + "</span>";
+    tip.hidden = false;
+
+    var r = el.getBoundingClientRect();
+    var t = tip.getBoundingClientRect();
+    var left = Math.min(Math.max(8, r.left + 12), Math.max(8, window.innerWidth - t.width - 8));
+    var top = r.top - t.height - 8;
+    if (top < 8) top = r.bottom + 8;
+    tip.style.left = left + "px";
+    tip.style.top = top + "px";
+  }
+  function hideTip() { $("tip").hidden = true; }
+
+  function wireResults() {
+    var out = $("results");
+    Array.prototype.forEach.call(out.querySelectorAll(".brow"), function (el) {
+      var b = parseInt(el.getAttribute("data-band"), 10);
+      el.addEventListener("mouseenter", function () { showTip(el, b); });
+      el.addEventListener("focus", function () { showTip(el, b); });
+      el.addEventListener("mouseleave", hideTip);
+      el.addEventListener("blur", hideTip);
+    });
+    Array.prototype.forEach.call(out.querySelectorAll("th button[data-sort]"), function (btn) {
+      btn.addEventListener("click", function () {
+        var k = btn.getAttribute("data-sort");
+        if (sortKey === k) sortDir = -sortDir;
+        else { sortKey = k; sortDir = (k === "name") ? 1 : -1; }
+        render(current);
+      });
+    });
+  }
+
+  /* -------------------------------------------------------------------- flow */
+  function setStatus(msg, bad) {
+    var el = $("status");
+    el.textContent = msg || "";
+    el.className = "status" + (bad ? " bad" : "");
+  }
+
+  function updateCount() {
+    var n = parseDeck($("decklist").value).reduce(function (a, e) { return a + e.qty; }, 0);
+    $("count-note").textContent = n + (n === 1 ? " card" : " cards");
+  }
+
+  function run() {
+    var entries = parseDeck($("decklist").value);
+    if (!entries.length) {
+      setStatus("Paste a decklist first — one card per line.", true);
+      return;
+    }
+
+    $("score-btn").disabled = true;
+    hideTip();
+    setStatus(cardIndex ? "Scoring…" : "Loading card data…");
+
+    loadCardData().then(function () {
+      var res = scoreDeck(entries, cardIndex);
+      setStatus("Measured " + res.scored + " cards · " + res.basics + " basic lands poured out");
+      render(res);
+    })["catch"](function (err) {
+      setStatus("Could not load card data (" + err.message + "). Reload the page and try again.", true);
+    }).then(function () {
+      $("score-btn").disabled = false;
+    });
+  }
+
+  $("score-btn").addEventListener("click", function () {
+    showingSample = ($("decklist").value.trim() === SAMPLE.trim());
+    run();
+  });
+  $("sample-btn").addEventListener("click", function () {
+    $("decklist").value = SAMPLE;
+    updateCount();
+    writeStore(SAMPLE);
+    showingSample = true;
+    run();
+  });
+  $("clear-btn").addEventListener("click", function () {
+    $("decklist").value = "";
+    updateCount();
+    writeStore("");
+    $("results").hidden = true;
+    setStatus("");
+    $("decklist").focus();
+  });
+  $("decklist").addEventListener("input", function () {
+    updateCount();
+    writeStore($("decklist").value);
+  });
+  window.addEventListener("scroll", hideTip, { passive: true });
+
+  /* Open in a working state: the viewer's own last list, otherwise the example. */
+  (function boot() {
+    var saved = readStore();
+    if (saved && saved.trim()) {
+      $("decklist").value = saved;
+      showingSample = (saved.trim() === SAMPLE.trim());
+    } else {
+      $("decklist").value = SAMPLE;
+      showingSample = true;
+    }
+    updateCount();
+    run();
+  })();
+</script>
