@@ -449,51 +449,51 @@
 
 <div class="shell">
   <header class="masthead">
-    <span class="eyebrow">Commander deck assay</span>
+    <span class="eyebrow">🧪 Commander deck assay</span>
     <h1>Milk Score<span class="drop">.</span></h1>
-    <p class="lede">Paste a Commander list and every card is weighed against how often the format
-      actually plays it. Staples score near zero — mild as milk. The cards nobody else sleeves push
-      the number up the heat scale, from mild to genuinely spicy. Basic lands get poured out before
-      anything is measured.</p>
+    <p class="lede">Paste a Commander list 🃏 and every card is weighed against how often the format
+      actually plays it. Staples score near zero — mild as milk 🥛. The cards nobody else sleeves push
+      the number up the heat scale 🌡️, from mild 🫑 to genuinely spicy 🌶️🔥. Basic lands 🌲 get poured
+      out before anything is measured.</p>
   </header>
 
   <section class="panel intake">
     <div class="intake-head">
-      <label for="decklist">Decklist</label>
-      <span class="eyebrow" id="count-note">0 cards</span>
+      <label for="decklist">📋 Decklist</label>
+      <span class="eyebrow" id="count-note">🃏 0 cards</span>
     </div>
     <textarea id="decklist" spellcheck="false" placeholder="1 Ruric Thar, the Unbowed&#10;1 Sol Ring&#10;1 Bosium Strip&#10;8 Forest"></textarea>
     <div class="actions">
-      <button type="button" class="btn-primary" id="score-btn">Score deck</button>
-      <button type="button" id="sample-btn">Load example deck</button>
-      <button type="button" id="clear-btn">Clear</button>
+      <button type="button" class="btn-primary" id="score-btn">🌶️ Score deck</button>
+      <button type="button" id="sample-btn">📥 Load example deck</button>
+      <button type="button" id="clear-btn">🗑️ Clear</button>
       <span class="status" id="status" role="status" aria-live="polite"></span>
     </div>
-    <p class="hint">Takes exports from Moxfield, Archidekt, TappedOut and Arena — <code>1 Sol Ring (LTC) 291</code>,
+    <p class="hint">💡 Takes exports from Moxfield, Archidekt, TappedOut and Arena — <code>1 Sol Ring (LTC) 291</code>,
       <code>1x Sol Ring</code>, or a bare <code>Sol Ring</code>. Set codes, collector numbers, foil markers and
       <code>[Category]</code> tags are stripped; sideboard, maybeboard and token sections are skipped.
-      Card names and EDHREC ranks are a snapshot bundled with the page (dated
+      Card names and EDHREC ranks are a snapshot bundled with the page (dated 📅
       <span id="snapshot-date">…</span>), not a live lookup — very recently spoiled cards may be missing.</p>
   </section>
 
   <section id="results" hidden></section>
 
   <div class="panel method">
-    <h2>How the score is poured</h2>
+    <h2>🥛 → 🌶️ How the score is poured</h2>
     <p>Every card carries an EDHREC rank: the most-played card in Commander is rank 1, and the ladder runs
       out past <span id="max-rank-a">32,000</span>. Rank is a running order rather than a play rate, so the
       gap between rank 20 and rank 120 matters far more than the gap between 20,000 and 20,100. A fractional
       exponent compresses the crowded top of the ladder and spreads out the long tail:</p>
     <div class="formula">card milk  =  100 × (rank ÷ <span id="max-rank-b">32,344</span>) ^ 0.4     ·     a card with no rank at all = 100
 deck milk  =  the average card milk, weighted by copies</div>
-    <p>Basic lands — snow basics and Wastes included — never enter the average; a deck is not spicier for
+    <p>🌲 Basic lands — snow basics and Wastes included — never enter the average; a deck is not spicier for
       running eleven Forests instead of fourteen. Everything else counts, commander included. A card so
-      rarely played that EDHREC has never ranked it takes the full 100.</p>
+      rarely played that EDHREC has never ranked it takes the full 100. 🥵</p>
   </div>
 
   <footer>
-    Card data and EDHREC ranks snapshotted from the <a href="https://scryfall.com/docs/api" target="_blank" rel="noopener">Scryfall API</a>.
-    Not affiliated with or endorsed by Wizards of the Coast, Scryfall or EDHREC.
+    🔗 Card data and EDHREC ranks snapshotted from the <a href="https://scryfall.com/docs/api" target="_blank" rel="noopener">Scryfall API</a>.
+    ⚠️ Not affiliated with or endorsed by Wizards of the Coast, Scryfall or EDHREC.
   </footer>
 </div>
 
@@ -509,22 +509,22 @@ deck milk  =  the average card milk, weighted by copies</div>
   var STORE_KEY = "milkscore.decklist.v1";
 
   var TIERS = [
-    { min: 0,  name: "Bell Pepper",       verdict: "Zero heat. This is the EDHREC front page with a commander stapled on — mild as the milk on the label. Nothing here would raise an eyebrow, let alone a temperature." },
-    { min: 12, name: "Poblano",           verdict: "A gentle warmth. Precon-adjacent — the good cards are all here, and so is everyone else's copy of them." },
-    { min: 24, name: "Jalapeño",          verdict: "A real build with a genuine kick. Recognisable, but a handful of slots are unmistakably yours." },
-    { min: 36, name: "Serrano",           verdict: "Properly seasoned. Enough off-menu cards that the table has to stop and actually read a few of them." },
-    { min: 50, name: "Cayenne",           verdict: "You are shopping below rank 5,000 on purpose. Expect questions about at least six cards." },
-    { min: 64, name: "Habanero",          verdict: "Deep cuts outnumber the staples. This deck exists in about four other places on earth." },
-    { min: 78, name: "Carolina Reaper",   verdict: "Cards that haven't been played on camera since Rath block. Keep a glass of milk nearby — you'll want it." }
+    { min: 0,  name: "Bell Pepper",       emoji: "🫑",       verdict: "Zero heat. This is the EDHREC front page with a commander stapled on — mild as the milk on the label. Nothing here would raise an eyebrow, let alone a temperature." },
+    { min: 12, name: "Poblano",           emoji: "🌶️",       verdict: "A gentle warmth. Precon-adjacent — the good cards are all here, and so is everyone else's copy of them." },
+    { min: 24, name: "Jalapeño",          emoji: "🌶️🌶️",     verdict: "A real build with a genuine kick. Recognisable, but a handful of slots are unmistakably yours." },
+    { min: 36, name: "Serrano",           emoji: "🌶️🌶️🌶️",   verdict: "Properly seasoned. Enough off-menu cards that the table has to stop and actually read a few of them." },
+    { min: 50, name: "Cayenne",           emoji: "🔥",       verdict: "You are shopping below rank 5,000 on purpose. Expect questions about at least six cards." },
+    { min: 64, name: "Habanero",          emoji: "🔥🔥",     verdict: "Deep cuts outnumber the staples. This deck exists in about four other places on earth." },
+    { min: 78, name: "Carolina Reaper",   emoji: "🔥🔥🔥💀", verdict: "Cards that haven't been played on camera since Rath block. Keep a glass of milk nearby 🥛 — you'll want it." }
   ];
 
   var BANDS = [
-    { name: "Staples",       hint: "rank 1–250",        max: 250,      ramp: "--ramp-1" },
-    { name: "Well known",    hint: "rank 251–1,500",    max: 1500,     ramp: "--ramp-2" },
-    { name: "Sometimes",     hint: "rank 1,501–5,000",  max: 5000,     ramp: "--ramp-3" },
-    { name: "Deep cut",      hint: "rank 5,001–12,000", max: 12000,    ramp: "--ramp-4" },
-    { name: "Obscure",       hint: "rank 12,001+",      max: Infinity, ramp: "--ramp-5" },
-    { name: "Off the chart", hint: "never ranked",      max: null,     ramp: "--ramp-6" }
+    { name: "Staples",       emoji: "⭐", hint: "rank 1–250",        max: 250,      ramp: "--ramp-1" },
+    { name: "Well known",    emoji: "👍", hint: "rank 251–1,500",    max: 1500,     ramp: "--ramp-2" },
+    { name: "Sometimes",     emoji: "🤷", hint: "rank 1,501–5,000",  max: 5000,     ramp: "--ramp-3" },
+    { name: "Deep cut",      emoji: "⛏️", hint: "rank 5,001–12,000", max: 12000,    ramp: "--ramp-4" },
+    { name: "Obscure",       emoji: "👻", hint: "rank 12,001+",      max: Infinity, ramp: "--ramp-5" },
+    { name: "Off the chart", emoji: "🛸", hint: "never ranked",      max: null,     ramp: "--ramp-6" }
   ];
 
   var SECTION_SKIP = /^(sideboard|maybeboard|maybe board|considering|tokens?|acquire|wishlist|planes?|schemes?|emblems?|attractions?|stickers?)\b/i;
@@ -734,7 +734,7 @@ deck milk  =  the average card milk, weighted by copies</div>
     var here = tierOf(score).name;
     var rungs = TIERS.map(function (t) {
       return '<div class="rung' + (here === t.name ? " on" : "") +
-             '" style="bottom:' + t.min + '%">' + esc(t.name) + "</div>";
+             '" style="bottom:' + t.min + '%">' + t.emoji + " " + esc(t.name) + "</div>";
     }).join("");
     return '<div class="gauge">' +
       '<div class="gauge-track" role="img" aria-label="Milk score ' + score.toFixed(1) +
@@ -751,28 +751,28 @@ deck milk  =  the average card milk, weighted by copies</div>
 
     var bandRows = BANDS.map(function (b, i) {
       if (!res.bandCounts[i]) return "";
-      return '<div class="frow ind"><span>' + esc(b.name) + '</span><span class="v">' +
+      return '<div class="frow ind"><span>' + b.emoji + " " + esc(b.name) + '</span><span class="v">' +
              res.bandCounts[i] + "  ·  " + share(res.bandCounts[i]) + "%</span></div>";
     }).join("");
 
     return '<div class="facts">' +
-      "<h2>Milk Facts</h2>" +
+      "<h2>🥛 Milk Facts</h2>" +
       '<div class="r-thin"></div>' +
-      '<div class="serving"><span>Serving size</span><span>1 deck (' + fmt(res.total) + " cards)</span></div>" +
+      '<div class="serving"><span>🍽️ Serving size</span><span>1 deck (' + fmt(res.total) + " cards)</span></div>" +
       '<div class="r-thick"></div>' +
-      '<div class="frow big"><span>Milk Score</span><span class="v">' + res.score.toFixed(1) + "</span></div>" +
+      '<div class="frow big"><span>🌡️ Milk Score</span><span class="v">' + res.score.toFixed(1) + "</span></div>" +
       '<div class="r-med"></div>' +
       '<div class="dv-head">share of measured</div>' +
       '<div class="r-thin"></div>' +
-      '<div class="frow"><span><b>Cards measured</b></span><span class="v">' + fmt(res.scored) + "</span></div>" +
+      '<div class="frow"><span><b>🃏 Cards measured</b></span><span class="v">' + fmt(res.scored) + "</span></div>" +
       bandRows +
       '<div class="r-thin"></div>' +
-      '<div class="frow"><span><b>Basic lands poured out</b></span><span class="v">' + fmt(res.basics) + "</span></div>" +
-      '<div class="frow"><span><b>Names not recognised</b></span><span class="v">' + fmt(res.unknown.length) + "</span></div>" +
+      '<div class="frow"><span><b>🌲 Basic lands poured out</b></span><span class="v">' + fmt(res.basics) + "</span></div>" +
+      '<div class="frow"><span><b>❓ Names not recognised</b></span><span class="v">' + fmt(res.unknown.length) + "</span></div>" +
       '<div class="r-med"></div>' +
-      '<div class="frow"><span>Median EDHREC rank</span><span class="v">' +
+      '<div class="frow"><span>📊 Median EDHREC rank</span><span class="v">' +
         (res.median === null ? "—" : fmt(res.median)) + "</span></div>" +
-      '<div class="frow"><span>Deepest cut</span><span class="v name" style="font-weight:600">' +
+      '<div class="frow"><span>🔪 Deepest cut</span><span class="v name" style="font-weight:600">' +
         (deepest ? esc(shortName(deepest.name)) : "—") + "</span></div>" +
       '<div class="r-thin"></div>' +
       '<div class="foot">Percentages are shares of the ' + fmt(res.scored) +
@@ -786,7 +786,7 @@ deck milk  =  the average card milk, weighted by copies</div>
       var n = res.bandCounts[i];
       var pct = res.scored ? Math.round((n / res.scored) * 100) : 0;
       return '<div class="brow" tabindex="0" data-band="' + i + '">' +
-        '<div class="brow-label">' + esc(b.name) + "<small>" + esc(b.hint) + "</small></div>" +
+        '<div class="brow-label">' + b.emoji + " " + esc(b.name) + "<small>" + esc(b.hint) + "</small></div>" +
         '<div class="brow-track"><div class="brow-fill" style="width:' +
           (n / max * 100).toFixed(2) + "%;background:" + rampVar(i) + '"></div></div>' +
         '<div class="brow-val"><b>' + n + "</b> · " + pct + "%</div>" +
@@ -821,7 +821,7 @@ deck milk  =  the average card milk, weighted by copies</div>
         '<td class="card">' +
           '<span class="dot" style="background:' + rampVar(r.band) + '"></span>' +
           "<span>" + esc(r.name) + "</span>" +
-          (r.commander ? '<span class="cmdr-chip">CMDR</span>' : "") +
+          (r.commander ? '<span class="cmdr-chip">👑 CMDR</span>' : "") +
           (r.qty > 1 ? '<span class="rk mono">×' + r.qty + "</span>" : "") +
         "</td>" +
         '<td class="num mono">' + (r.rank === null ? "unranked" : fmt(r.rank)) + "</td>" +
@@ -832,9 +832,9 @@ deck milk  =  the average card milk, weighted by copies</div>
     }).join("");
 
     return '<div class="ledger-wrap"><table><thead><tr>' +
-      '<th><button type="button" data-sort="name">Card ' + arrow("name") + "</button></th>" +
-      '<th class="num"><button type="button" data-sort="rank">EDHREC rank ' + arrow("rank") + "</button></th>" +
-      '<th class="num"><button type="button" data-sort="milk">Milk ' + arrow("milk") + "</button></th>" +
+      '<th><button type="button" data-sort="name">🃏 Card ' + arrow("name") + "</button></th>" +
+      '<th class="num"><button type="button" data-sort="rank">📊 EDHREC rank ' + arrow("rank") + "</button></th>" +
+      '<th class="num"><button type="button" data-sort="milk">🌶️ Milk ' + arrow("milk") + "</button></th>" +
       "</tr></thead><tbody>" + body + "</tbody></table></div>";
   }
 
@@ -846,43 +846,43 @@ deck milk  =  the average card milk, weighted by copies</div>
     var plain = byMilk.slice(-8).reverse();
 
     var html = "";
-    if (showingSample) html += '<span class="sample-flag">Example deck · Ruric Thar, the Unbowed</span>';
+    if (showingSample) html += '<span class="sample-flag">🃏 Example deck · Ruric Thar, the Unbowed</span>';
 
     html +=
       '<div class="topgrid">' +
         '<div class="panel readout">' + gaugeHTML(res.score) +
           '<div class="score-body">' +
             '<div class="score-num">' + res.score.toFixed(1) + '<span class="of">/100</span></div>' +
-            '<div class="tier-name">' + esc(tier.name) + "</div>" +
+            '<div class="tier-name">' + tier.emoji + " " + esc(tier.name) + "</div>" +
             '<p class="verdict">' + esc(tier.verdict) + "</p>" +
           "</div>" +
         "</div>" +
         factsHTML(res) +
       "</div>" +
 
-      '<div class="sec"><div class="sec-head"><h2>Where the deck sits on the ladder</h2>' +
+      '<div class="sec"><div class="sec-head"><h2>📊 Where the deck sits on the ladder</h2>' +
         "<p>Each of the " + fmt(res.scored) + " measured cards falls into one band of EDHREC's play order. " +
         "Deeper colour means the format plays it less often.</p></div>" +
         chartHTML(res) + "</div>" +
 
       '<div class="notable">' +
-        '<div class="panel notable-card"><h3>Deepest cuts</h3>' +
+        '<div class="panel notable-card"><h3>🥵 Deepest cuts</h3>' +
           '<p class="sub">Highest milk in the deck</p>' + nlist(deep) + "</div>" +
-        '<div class="panel notable-card"><h3>Everyone is playing these</h3>' +
+        '<div class="panel notable-card"><h3>🥛 Everyone is playing these</h3>' +
           '<p class="sub">Lowest milk in the deck</p>' + nlist(plain) + "</div>" +
       "</div>";
 
     if (res.unknown.length) {
-      html += '<div class="panel note"><b>' + res.unknown.length +
+      html += '<div class="panel note"><b>⚠️ ' + res.unknown.length +
         (res.unknown.length === 1 ? " name was" : " names were") +
         " not recognised, so they are not in the score</b>" +
-        "<span>Check the spelling, or paste the front face only for a double-faced card:</span>" +
+        "<span>🔍 Check the spelling, or paste the front face only for a double-faced card:</span>" +
         '<span class="names">' + esc(res.unknown.slice(0, 40).join("  ·  ")) +
         (res.unknown.length > 40 ? "  ·  and " + (res.unknown.length - 40) + " more" : "") +
         "</span></div>";
     }
 
-    html += '<div class="sec"><div class="sec-head"><h2>Card ledger</h2>' +
+    html += '<div class="sec"><div class="sec-head"><h2>📖 Card ledger</h2>' +
       "<p>Every measured card with its rank and its own milk figure. Sort by any column.</p></div>" +
       ledgerHTML(res) + "</div>";
 
@@ -905,7 +905,7 @@ deck milk  =  the average card milk, weighted by copies</div>
       ? "ranks " + fmt(ranks[0]) + "–" + fmt(ranks[ranks.length - 1])
       : (band === 5 ? "no EDHREC rank" : "no cards in this band");
 
-    tip.innerHTML = "<strong>" + esc(BANDS[band].name) + "</strong><span>" +
+    tip.innerHTML = "<strong>" + BANDS[band].emoji + " " + esc(BANDS[band].name) + "</strong><span>" +
       n + " card" + (n === 1 ? "" : "s") + " · " + pct + "% of measured · " + range + "</span>";
     tip.hidden = false;
 
@@ -947,26 +947,26 @@ deck milk  =  the average card milk, weighted by copies</div>
 
   function updateCount() {
     var n = parseDeck($("decklist").value).reduce(function (a, e) { return a + e.qty; }, 0);
-    $("count-note").textContent = n + (n === 1 ? " card" : " cards");
+    $("count-note").textContent = "🃏 " + n + (n === 1 ? " card" : " cards");
   }
 
   function run() {
     var entries = parseDeck($("decklist").value);
     if (!entries.length) {
-      setStatus("Paste a decklist first — one card per line.", true);
+      setStatus("✏️ Paste a decklist first — one card per line.", true);
       return;
     }
 
     $("score-btn").disabled = true;
     hideTip();
-    setStatus(cardIndex ? "Scoring…" : "Loading card data…");
+    setStatus(cardIndex ? "🧮 Scoring…" : "⏳ Loading card data…");
 
     loadCardData().then(function () {
       var res = scoreDeck(entries, cardIndex);
-      setStatus("Measured " + res.scored + " cards · " + res.basics + " basic lands poured out");
+      setStatus("✅ Measured " + res.scored + " cards · 🌲 " + res.basics + " basic lands poured out");
       render(res);
     })["catch"](function (err) {
-      setStatus("Could not load card data (" + err.message + "). Reload the page and try again.", true);
+      setStatus("⚠️ Could not load card data (" + err.message + "). Reload the page and try again.", true);
     }).then(function () {
       $("score-btn").disabled = false;
     });
