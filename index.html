@@ -210,7 +210,8 @@
   .gauge-fill {
     position: absolute;
     left: 0; right: 0; bottom: 0;
-    background: linear-gradient(to top, var(--ramp-1), var(--ramp-3) 55%, var(--ramp-5));
+    /* mild as milk at the bottom, climbing to chili-red at the top */
+    background: linear-gradient(to top, var(--ramp-1), var(--ramp-3) 45%, var(--ramp-5) 78%, var(--accent));
     transition: height .7s cubic-bezier(.22, 1, .36, 1);
   }
   .gauge-line {
@@ -451,8 +452,9 @@
     <span class="eyebrow">Commander deck assay</span>
     <h1>Milk Score<span class="drop">.</span></h1>
     <p class="lede">Paste a Commander list and every card is weighed against how often the format
-      actually plays it. Staples score near zero. The cards nobody else sleeves score the milkiest.
-      Basic lands get poured out before anything is measured.</p>
+      actually plays it. Staples score near zero — mild as milk. The cards nobody else sleeves push
+      the number up the heat scale, from mild to genuinely spicy. Basic lands get poured out before
+      anything is measured.</p>
   </header>
 
   <section class="panel intake">
@@ -507,13 +509,13 @@ deck milk  =  the average card milk, weighted by copies</div>
   var STORE_KEY = "milkscore.decklist.v1";
 
   var TIERS = [
-    { min: 0,  name: "Skim",                 verdict: "This is the EDHREC front page with a commander stapled on. Nothing here would surprise anyone at the table." },
-    { min: 12, name: "One Percent",          verdict: "Precon-adjacent. The good cards are all here, and so is everyone else's version of them." },
-    { min: 24, name: "Two Percent",          verdict: "A real build on a familiar frame. Recognisable, but a handful of slots are genuinely yours." },
-    { min: 36, name: "Whole Milk",           verdict: "Properly brewed. Enough off-menu cards that the table has to stop and read a few of them." },
-    { min: 50, name: "Half and Half",        verdict: "You are shopping below rank 5,000 on purpose. Expect questions about at least six cards." },
-    { min: 64, name: "Heavy Cream",          verdict: "Deep cuts outnumber the staples. This deck exists in about four other places on earth." },
-    { min: 78, name: "Raw, Unpasteurised",   verdict: "Cards that have not been played on camera since Rath block. No notes." }
+    { min: 0,  name: "Bell Pepper",       verdict: "Zero heat. This is the EDHREC front page with a commander stapled on — mild as the milk on the label. Nothing here would raise an eyebrow, let alone a temperature." },
+    { min: 12, name: "Poblano",           verdict: "A gentle warmth. Precon-adjacent — the good cards are all here, and so is everyone else's copy of them." },
+    { min: 24, name: "Jalapeño",          verdict: "A real build with a genuine kick. Recognisable, but a handful of slots are unmistakably yours." },
+    { min: 36, name: "Serrano",           verdict: "Properly seasoned. Enough off-menu cards that the table has to stop and actually read a few of them." },
+    { min: 50, name: "Cayenne",           verdict: "You are shopping below rank 5,000 on purpose. Expect questions about at least six cards." },
+    { min: 64, name: "Habanero",          verdict: "Deep cuts outnumber the staples. This deck exists in about four other places on earth." },
+    { min: 78, name: "Carolina Reaper",   verdict: "Cards that haven't been played on camera since Rath block. Keep a glass of milk nearby — you'll want it." }
   ];
 
   var BANDS = [
