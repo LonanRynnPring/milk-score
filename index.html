@@ -479,10 +479,10 @@
   <div class="panel method">
     <h2>How the score is poured</h2>
     <p>Every card carries an EDHREC rank: the most-played card in Commander is rank 1, and the ladder runs
-      out past 33,000. Rank is a running order rather than a play rate, so the gap between rank 20 and rank
-      120 matters far more than the gap between 20,000 and 20,100. A fractional exponent compresses the
-      crowded top of the ladder and spreads out the long tail:</p>
-    <div class="formula">card milk  =  100 × (rank ÷ 33,000) ^ 0.4     ·     a card with no rank at all = 100
+      out past <span id="max-rank-a">32,000</span>. Rank is a running order rather than a play rate, so the
+      gap between rank 20 and rank 120 matters far more than the gap between 20,000 and 20,100. A fractional
+      exponent compresses the crowded top of the ladder and spreads out the long tail:</p>
+    <div class="formula">card milk  =  100 × (rank ÷ <span id="max-rank-b">32,344</span>) ^ 0.4     ·     a card with no rank at all = 100
 deck milk  =  the average card milk, weighted by copies</div>
     <p>Basic lands — snow basics and Wastes included — never enter the average; a deck is not spicier for
       running eleven Forests instead of fourteen. Everything else counts, commander included. A card so
@@ -658,8 +658,11 @@ deck milk  =  the average card milk, weighted by copies</div>
         }
       });
       cardIndex = idx;
-      var el = $("snapshot-date");
-      if (el) el.textContent = cardMeta.asOf;
+      var dateEl = $("snapshot-date");
+      if (dateEl) dateEl.textContent = cardMeta.asOf;
+      var rankA = $("max-rank-a"), rankB = $("max-rank-b");
+      if (rankA) rankA.textContent = fmt(cardMeta.maxRank);
+      if (rankB) rankB.textContent = fmt(cardMeta.maxRank);
     });
     return loadPromise;
   }
